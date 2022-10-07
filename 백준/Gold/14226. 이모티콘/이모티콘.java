@@ -33,7 +33,7 @@ public class Main {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
-		cbsmatrix = new int[2001][2001];
+		cbsmatrix = new int[1001][1001];
 		for(int arr[] : cbsmatrix) {
 			Arrays.fill(arr, INT_MAX);
 		}
@@ -41,7 +41,7 @@ public class Main {
 		
 		int min_result = Integer.MAX_VALUE;
 		
-		for(int r = 1; r <= 2000; r++) {
+		for(int r = 1; r <= 1000; r++) {
 			min_result = Math.min(min_result, cbsmatrix[r][n]);
 		}
 		
@@ -84,7 +84,7 @@ public class Main {
 			}
 			
 			// 페이스트하는 경우
-			if(curCb+curS < 2001 && cnt < cbsmatrix[curCb][curCb+curS]) {
+			if(curCb+curS < 1001 && cnt < cbsmatrix[curCb][curCb+curS]) {
 				cbsmatrix[curCb][curCb+curS] = cnt;
 				q.add(new CbS(curCb, curS+curCb));
 			}
