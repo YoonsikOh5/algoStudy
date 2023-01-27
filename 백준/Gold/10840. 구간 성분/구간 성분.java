@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 
 public class Main {
@@ -13,7 +14,8 @@ public class Main {
         String a = br.readLine();
         String b = br.readLine();
 
-        HashMap<String, Integer> hm = new HashMap<>();
+//        HashMap<String, Integer> hm = new HashMap<>();
+        HashSet<String> hs = new HashSet<>();
 
         int alen = a.length();
         int blen = b.length();
@@ -22,7 +24,8 @@ public class Main {
             int[] arr = new int[27];
                 for(int k = i; k < alen; k++){
                     arr[a.charAt(k)-'a']++;
-                    hm.put(Arrays.toString(arr),Integer.valueOf((k-i+1)));
+//                    hm.put(Arrays.toString(arr),Integer.valueOf((k-i+1)));
+                    hs.add(Arrays.toString(arr));
                 }
         }
 
@@ -42,8 +45,8 @@ public class Main {
             int[] arr = new int[27];
             for(int k = i; k < blen; k++){
                 arr[b.charAt(k)-'a']++;
-                if(hm.containsKey(Arrays.toString(arr))){
-                    result = Math.max(hm.get(Arrays.toString(arr)),result);
+                if(hs.contains(Arrays.toString(arr))){
+                    result = Math.max((k-i+1),result);
                 }
             }
         }
@@ -54,8 +57,8 @@ public class Main {
 //                for(int k = j; k < j+i; k++) {
 //                    arr[(b.charAt(k) - 'a')]++;
 //                }
-//                if(hm.containsKey(Arrays.toString(arr))){
-//                    result = hm.get(Arrays.toString(arr));
+//                if(hs.contains(Arrays.toString(arr))){
+//                    result = i;
 //                    break outloop;
 //                }
 //            }
