@@ -18,30 +18,48 @@ public class Main {
         int alen = a.length();
         int blen = b.length();
 
-        for(int i = 1; i <= alen; i++){
-            for(int j = 0, size = (alen-i+1); j < size; j++){
+        for(int i = 0; i < alen; i++){
             int[] arr = new int[27];
-                for(int k = j; k < j+i; k++) {
-                    arr[(a.charAt(k) - 'a')]++;
+                for(int k = i; k < alen; k++){
+                    arr[a.charAt(k)-'a']++;
+                    hm.put(Arrays.toString(arr),Integer.valueOf((k-i+1)));
                 }
-            hm.put(Arrays.toString(arr),Integer.valueOf(i));
-            }
         }
+
+//        for(int i = 1; i <= alen; i++){
+//            for(int j = 0, size = (alen-i+1); j < size; j++){
+//            int[] arr = new int[27];
+//                for(int k = j; k < j+i; k++) {
+//                    arr[(a.charAt(k) - 'a')]++;
+//                }
+//            hm.put(Arrays.toString(arr),Integer.valueOf(i));
+//            }
+//        }
 
         int result = 0;
 
-        outloop : for(int i = blen; i >= 1; i--){
-            for(int j = 0, size = (blen-i+1); j < size; j++){
-                int[] arr = new int[27];
-                for(int k = j; k < j+i; k++) {
-                    arr[(b.charAt(k) - 'a')]++;
-                }
+        for(int i = 0; i < blen; i++){
+            int[] arr = new int[27];
+            for(int k = i; k < blen; k++){
+                arr[b.charAt(k)-'a']++;
                 if(hm.containsKey(Arrays.toString(arr))){
-                    result = hm.get(Arrays.toString(arr));
-                    break outloop;
+                    result = Math.max(hm.get(Arrays.toString(arr)),result);
                 }
             }
         }
+
+//        outloop : for(int i = blen; i >= 1; i--){
+//            for(int j = 0, size = (blen-i+1); j < size; j++){
+//                int[] arr = new int[27];
+//                for(int k = j; k < j+i; k++) {
+//                    arr[(b.charAt(k) - 'a')]++;
+//                }
+//                if(hm.containsKey(Arrays.toString(arr))){
+//                    result = hm.get(Arrays.toString(arr));
+//                    break outloop;
+//                }
+//            }
+//        }
 
         bw.write(result+"");
         bw.flush();
