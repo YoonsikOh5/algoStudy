@@ -9,6 +9,8 @@ public class Main {
 
     static boolean[] visited;
 
+    static int maxNum;
+
     static class Node {
 
         int num;
@@ -44,11 +46,13 @@ public class Main {
             tree[child].add(new Node(parent, len));
         }
         maxlen = 0;
-        for (int i = 1; i <= n; i++) {
-            visited = new boolean[n + 1];
-            visited[i] = true;
-            dfs(i, 0);
-        }
+        maxNum = 1;
+        visited = new boolean[n + 1];
+        visited[1] = true;
+        dfs(1, 0);
+        visited = new boolean[n + 1];
+        visited[maxNum] = true;
+        dfs(maxNum, 0);
 
         bw.write(maxlen + "");
         bw.flush();
@@ -67,6 +71,9 @@ public class Main {
             }
         }
 
-        maxlen = Math.max(maxlen, curlen);
+        if (maxlen < curlen) {
+            maxlen = curlen;
+            maxNum = parent;
+        }
     }
 }
