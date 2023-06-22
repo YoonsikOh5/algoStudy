@@ -28,7 +28,7 @@ public class Main {
 
                 int index = Arrays.binarySearch(dp, 0, size, cur);
 
-                if (index > 0) {
+                if (index >= 0) {
                     continue;
                 }
 
