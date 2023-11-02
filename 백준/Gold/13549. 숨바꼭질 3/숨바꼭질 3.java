@@ -1,136 +1,77 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-	static int N, K;
-	
-    public static void main(String[] args) throws Exception {
-    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    	
-    	StringTokenizer st = new StringTokenizer(br.readLine());
-    	
-    	N = Integer.parseInt(st.nextToken());
-    	K = Integer.parseInt(st.nextToken());
-    	
-    	int result = bfs();
-    	
-    	bw.write(result+"");
+    static int N, K;
+    static boolean[] visited;
+    static int result;
+
+    static class Spot {
+        int x;
+        int time;
+
+        public Spot(int x, int time) {
+            this.x = x;
+            this.time = time;
+        }
+    }
+
+    public static void main(String args[]) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+
+        visited = new boolean[100001];
+
+        dijk();
+
+        bw.write(result + "");
         bw.flush();
         bw.close();
         br.close();
     }
-    
-    static int bfs() {
-    	Queue<Integer> q = new LinkedList<>();
-    	boolean visited[] = new boolean[200001];
-    	if(N==K) {
-    		return 0;
-    	}
-    	
-    	q.add(N);
-    	visited[N]=true;
-    	
-    	q.add(-1);
-    	int counter = 0;
-    	
-    	while(q.size()>0) {
-    		int cur = q.poll();
-    		
-    		if(cur==-1) {
-    			counter++;
-    			if(q.size()>0) {
-    				q.add(-1);
-    			}
-    			continue;
-    		}
-    		
-    		int mulcur = cur*2;
-    		while(mulcur <= 200000) {
-    			if(mulcur==K) {
-    				return counter;
-    			}
-    			if(mulcur==0) {
-    				break;
-    			}
-    			if(visited[mulcur]==false) {
-    				visited[mulcur] = true;
-    			}
-    			mulcur *= 2;
-    		}
-    		
-    		int curplusone = cur+1;
-    		int curminusone = cur-1;
-    		
-    		if(inRange(curplusone)) {
-    			if(curplusone==K) {
-    				return counter+1;
-    			}
-    			if(visited[curplusone]==false) {
-    				q.add(curplusone);
-    				visited[curplusone] = true;
-    			}
-    		}
-    		if(inRange(curminusone)) {
-    			if(curminusone==K) {
-    				return counter+1;
-    			}
-    			if(visited[curminusone]==false) {
-    				q.add(curminusone);
-    				visited[curminusone] = true;
-    			}
-    		}
-    		
-    		cur *= 2;
-    		
-    		while(cur <= 200000) {
-    			if(cur==0) {
-    				break;
-    			}
-    			
-    			curplusone = cur+1;
-        		curminusone = cur-1;
-        		
-        		if(inRange(curplusone)) {
-        			if(curplusone==K) {
-        				return counter+1;
-        			}
-        			if(visited[curplusone]==false) {
-        				q.add(curplusone);
-        				visited[curplusone] = true;
-        			}
-        		}
-        		if(inRange(curminusone)) {
-        			if(curminusone==K) {
-        				return counter+1;
-        			}
-        			if(visited[curminusone]==false) {
-        				q.add(curminusone);
-        				visited[curminusone] = true;
-        			}
-        		}
-    		
-        		cur *= 2;
-    		}
-    	
-    	}
-    	
-    	return 0;
+
+    private static void dijk() {
+        PriorityQueue<Spot> pq = new PriorityQueue<>(new Comparator<Spot>() {
+            @Override
+            public int compare(Spot o1, Spot o2) {
+                return o1.time - o2.time;
+            }
+        });
+
+        pq.offer(new Spot(N, 0));
+        visited[N] = true;
+        while (pq.size() > 0) {
+            Spot poll = pq.poll();
+            int time = poll.time;
+            int x = poll.x;
+            visited[x] = true;
+            if (x == K) {
+                result = time;
+                return;
+            }
+            int[] arr = new int[3];
+            arr[0] = x + 1;
+            arr[1] = x - 1;
+            arr[2] = 2 * x;
+            for (int i = 0; i < 3; i++) {
+                if (arr[i] >= 0 && arr[i] <= 100000) {
+                    if (visited[arr[i]] == false) {
+                        if (i == 2) {
+                            pq.offer(new Spot(arr[i], time));
+                        } else {
+                            pq.offer(new Spot(arr[i], time + 1));
+                        }
+                    }
+                }
+            }
+        }
     }
-    
-    static boolean inRange(int num) {
-    	if(num>=0 && num <=200000) {
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
-    
-    
+
 }
